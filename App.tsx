@@ -13,7 +13,8 @@ const App: FC = () => {
   const [isAddMode, setIsAddMode] = useState(false);
 
   const addGoalToList = (enteredGoal: string) => {
-    if (!enteredGoal.trim()) return;
+    if (!enteredGoal.length) return;
+
     setCourseGoals((currentGoals) => [
       ...currentGoals,
       { uuid: Math.random().toString(), value: enteredGoal },
