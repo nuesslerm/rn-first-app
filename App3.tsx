@@ -1,5 +1,5 @@
 import React, { useState, FC } from 'react';
-import { View, FlatList, StyleSheet, Button } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import GoalInput from './components/Goalinput';
 import GoalItem from './components/GoalItem';
 
@@ -10,7 +10,6 @@ export type CourseGoalItemType = {
 
 const App: FC = () => {
   const [courseGoals, setCourseGoals] = useState<CourseGoalItemType[]>([]);
-  const [isAddMode, setIsAddMode] = useState(false);
 
   const addGoalToList = (enteredGoal: string) => {
     if (!enteredGoal.trim()) return;
@@ -18,7 +17,6 @@ const App: FC = () => {
       ...currentGoals,
       { uuid: Math.random().toString(), value: enteredGoal },
     ]);
-    setIsAddMode(false);
   };
 
   const removeGoalFromList = (goalId: string) => {
@@ -29,17 +27,15 @@ const App: FC = () => {
 
   return (
     <View style={styles.screen}>
-      <Button title="Add New Goal" onPress={() => setIsAddMode(true)} />
-      <GoalInput
-        addGoalToList={addGoalToList}
-        visible={isAddMode}
-        setIsAddMode={setIsAddMode}
-      />
+      <GoalInput addGoalToList={addGoalToList} />
       <FlatList
         keyExtractor={(item, index) => `${item.uuid}_${index}`}
+        // keyExtractor={(_, index) => index.toString()}
         data={courseGoals}
         renderItem={(itemData) => (
           <GoalItem
+            // onDelete={removeGoalFromList.bind(this, itemData.item.uuid)}
+            // onDelete={() => removeGoalFromList(itemData.item.uuid)}
             title={itemData.item.value}
             uuid={itemData.item.uuid}
             onDelete={removeGoalFromList}
